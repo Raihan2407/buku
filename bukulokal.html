@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BukuLokal — Indonesia's Book & UMKM Commerce Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --ink: #050508;
+  --ink-80: rgba(5,5,8,0.8);
+  --ink-50: rgba(5,5,8,0.5);
+  --ink-20: rgba(5,5,8,0.2);
+  --ink-08: rgba(5,5,8,0.08);
+  --ink-04: rgba(5,5,8,0.04);
+  --paper: #FAFAFA;
+  --white: #FFFFFF;
+  --sage: #219E5D;
+  --sage-light: #3BD384;
+  --sage-pale: #DCFCE7;
+  --ocean: #0C4A6E;
+  --ocean-mid: #0EA5E9;
+  --ocean-pale: #E0F2FE;
+  --amber: #D97706;
+  --amber-pale: #FEF3C7;
+  --warm-gray: #F8FAFC;
+  --line: rgba(5,5,8,0.08);
+  --line-strong: rgba(5,5,8,0.16);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 40px;
+  --r-pill: 100px;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--warm-gray); }
+::-webkit-scrollbar-thumb { background: var(--ink-20); border-radius: 4px; }
+
+/* ═══════════════════════════════════
+   NAVBAR
+═══════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  transition: all 0.4s ease;
+}
+
+nav.scrolled {
+  background: rgba(250,250,247,0.94);
+  backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 32px rgba(0,0,0,0.06);
+}
+
+.nav-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+
+.logo-mark {
+  width: 36px; height: 36px;
+  background: var(--ink);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(82,183,136,0.5));
+}
+
+.logo-mark svg { position: relative; z-index: 1; }
+
+.logo-wordmark {
+  font-family: var(--serif);
+  font-size: 21px;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.logo-wordmark em {
+  font-style: italic;
+  color: var(--sage);
+}
+
+.nav-center {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(10,10,15,0.04);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 4px;
+}
+
+.nav-link {
+  padding: 7px 18px;
+  border-radius: var(--r-pill);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-50);
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover, .nav-link.active { color: var(--ink); background: white; }
+
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+.btn-ghost {
+  padding: 9px 20px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-80);
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.5); border-color: var(--ink-50); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+
+.btn-solid {
+  padding: 10px 22px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to bottom, #111, var(--ink));
+  border: 1px solid var(--ink);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12), inset 0 1px 1px rgba(255,255,255,0.1);
+}
+.btn-solid:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15); }
+
+/* ═══════════════════════════════════
+   ANNOUNCEMENT BAR
+═══════════════════════════════════ */
+.announce-bar {
+  background: var(--sage);
+  color: white;
+  text-align: center;
+  padding: 10px 1rem;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  z-index: 201;
+}
+
+.announce-bar a { color: white; font-weight: 700; text-underline-offset: 3px; }
+
+.announce-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--sage-light);
+  box-shadow: 0 0 8px var(--sage-light);
+  animation: glow 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes glow {
+  0%,100% { opacity: 1; box-shadow: 0 0 8px var(--sage-light); }
+  50% { opacity: 0.5; box-shadow: 0 0 3px var(--sage-light); }
+}
+
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 130px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Architectural background */
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  z-index: 0;
+}
+.hero-canvas::before {
+  content: '';
+  position: absolute;
+  top: -20%; left: -10%;
+  width: 60%; height: 60%;
+  background: radial-gradient(circle, rgba(59,211,132,0.12) 0%, rgba(250,250,250,0) 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+}
+.hero-canvas::after {
+  content: '';
+  position: absolute;
+  bottom: -10%; right: -20%;
+  width: 70%; height: 70%;
+  background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, rgba(250,250,250,0) 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+/* Large serif watermark */
+.hero-watermark {
+  position: absolute;
+  bottom: -80px;
+  right: -60px;
+  font-family: var(--serif);
+  font-size: clamp(180px, 22vw, 340px);
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(45,106,79,0.08);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+/* Geometric accent */
+.hero-geo {
+  position: absolute;
+  top: 140px;
+  right: clamp(2rem, 8vw, 8rem);
+  width: clamp(320px, 38vw, 560px);
+  aspect-ratio: 1;
+  z-index: 2;
+}
+
+.hero-geo-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.hero-geo-circle:nth-child(2) { inset: 8%; border-color: rgba(45,106,79,0.12); }
+.hero-geo-circle:nth-child(3) { inset: 18%; border-color: var(--line); }
+
+.hero-geo-book {
+  position: absolute;
+  inset: 22%;
+  border-radius: 20px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.hero-book-left {
+  width: 52%;
+  background: linear-gradient(170deg, #0A0A0F 0%, #1B3A5C 100%);
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-book-left::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sage-light), var(--ocean-mid));
+}
+
+.hero-book-right {
+  width: 48%;
+  background: var(--white);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: none;
+}
+
+.hb-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sage-light);
+  margin-bottom: 8px;
+}
+
+.hb-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(16px, 2.5vw, 28px);
+  color: white;
+  line-height: 1.25;
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hb-author {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 12px;
+}
+
+.hb-chart-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-50);
+}
+
+.hb-stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hb-bar-item { display: flex; flex-direction: column; gap: 4px; }
+.hb-bar-name { font-size: 9px; color: var(--ink-50); display: flex; justify-content: space-between; }
+.hb-bar-track { height: 4px; background: var(--ink-08); border-radius: 2px; }
+.hb-bar-fill { height: 4px; border-radius: 2px; transition: width 1.5s ease; }
+
+.hero-float-card {
+  position: absolute;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.hero-float-1 {
+  bottom: 15%;
+  left: 5%;
+  min-width: 220px;
+}
+
+.hero-float-2 {
+  top: 12%;
+  left: 8%;
+  min-width: 200px;
+}
+
+.float-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-50);
+  margin-bottom: 6px;
+}
+
+.float-value {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.float-sub { font-size: 11px; color: var(--ink-50); margin-top: 4px; }
+
+.float-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sage);
+  background: var(--sage-pale);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  margin-top: 6px;
+}
+
+.float-umkm-list { display: flex; flex-direction: column; gap: 8px; }
+.float-umkm-item { display: flex; align-items: center; gap: 10px; }
+.float-umkm-dot { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; font-size: 16px; flex-shrink: 0; }
+.float-umkm-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+.float-umkm-city { font-size: 10px; color: var(--ink-50); }
+.float-umkm-new { font-size: 9px; font-weight: 700; background: var(--sage); color: white; padding: 1px 7px; border-radius: var(--r-pill); }
+
+/* Hero content */
+.hero-content {
+  position: relative;
+  z-index: 5;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3rem) clamp(4rem, 8vh, 7rem);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 3rem;
+}
+
+.hero-left { }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.eyebrow-tag {
+  padding: 5px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-80);
+  letter-spacing: 0.02em;
+}
+
+.eyebrow-separator { color: var(--ink-20); font-size: 18px; }
+
+.eyebrow-tag.green {
+  background: var(--sage-pale);
+  border-color: rgba(45,106,79,0.2);
+  color: var(--sage);
+}
+
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.hero-h1 em {
+  font-style: italic;
+  color: var(--sage);
+}
+
+.hero-h1 .line-indent {
+  display: block;
+  padding-left: clamp(40px, 8%, 80px);
+}
+
+.hero-descriptor {
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: var(--ink-50);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 40px;
+}
+
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+
+.btn-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: linear-gradient(to bottom, #111, var(--ink));
+  color: white;
+  border-radius: var(--r-pill);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid var(--ink);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1), inset 0 1px 1px rgba(255,255,255,0.15);
+}
+
+.btn-cta-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(59,211,132,0.3));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-cta-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.2); }
+.btn-cta-primary:hover::after { opacity: 1; }
+
+.btn-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 28px;
+  background: rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px);
+  color: var(--ink-80);
+  border-radius: var(--r-pill);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.btn-cta-secondary:hover { background: white; border-color: var(--ink-20); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+.hero-proof {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.proof-avatars { display: flex; }
+.proof-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2.5px solid var(--paper);
+  display: grid;
+  place-items: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-left: -12px;
+  font-family: var(--serif);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  position: relative;
+  transition: transform 0.2s;
+}
+.proof-avatar:hover { transform: translateY(-3px); z-index: 10; }
+
+.proof-avatar:first-child { margin-left: 0; }
+
+.proof-text { font-size: 13px; color: var(--ink-50); line-height: 1.5; }
+.proof-text strong { color: var(--ink); font-weight: 700; }
+
+.proof-divider { width: 1px; height: 32px; background: var(--line); }
+
+.proof-rating { display: flex; flex-direction: column; gap: 2px; }
+.proof-stars { color: #E8A900; font-size: 13px; letter-spacing: 1px; }
+.proof-rating-text { font-size: 12px; color: var(--ink-50); }
+
+.hero-right { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+
+/* ═══════════════════════════════════
+   LOGOS / PRESS BAR
+═══════════════════════════════════ */
+.press-section {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 28px clamp(1.25rem, 4vw, 3rem);
+  background: white;
+}
+
+.press-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  flex-wrap: wrap;
+}
+
+.press-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-20);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.press-logos {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  flex-wrap: wrap;
+}
+
+.press-logo {
+  font-family: var(--serif);
+  font-size: clamp(14px, 2vw, 18px);
+  font-style: italic;
+  color: var(--ink-20);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.press-logo:hover { color: var(--ink-50); }
+
+/* ═══════════════════════════════════
+   SECTION SCAFFOLDING
+═══════════════════════════════════ */
+.section {
+  padding: clamp(6rem, 12vw, 10rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.section-wrap { max-width: 1320px; margin: 0 auto; }
+
+.section-number {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-20);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.section-number::after { content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--ink-20); }
+
+.section-h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.section-h2 em { font-style: italic; color: var(--sage); }
+
+.section-lead {
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  color: var(--ink-50);
+  line-height: 1.8;
+  max-width: 520px;
+}
+
+.section-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  flex-wrap: wrap;
+}
+
+.link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--line-strong);
+  padding-bottom: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.link-cta:hover { color: var(--sage); border-color: var(--sage); gap: 12px; }
+
+/* ═══════════════════════════════════
+   PROBLEM / VALUE PROP SECTION
+═══════════════════════════════════ */
+.value-section { background: var(--ink); position: relative; overflow: hidden; }
+
+.value-section::before {
+  content: '01';
+  position: absolute;
+  top: -60px;
+  left: -20px;
+  font-family: var(--serif);
+  font-size: 300px;
+  font-style: italic;
+  color: rgba(255,255,255,0.02);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.value-left .section-number { color: rgba(255,255,255,0.2); }
+.value-left .section-number::after { background: rgba(255,255,255,0.2); }
+
+.value-left .section-h2 { color: white; }
+.value-left .section-lead { color: rgba(255,255,255,0.5); }
+
+.value-pillars {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.value-pillar {
+  padding: 28px 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 20px;
+  align-items: start;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.value-pillar:last-child { border-bottom: 1px solid rgba(255,255,255,0.07); }
+.value-pillar:hover { padding-left: 8px; }
+
+.pillar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.pillar-icon.sage { background: rgba(82,183,136,0.15); }
+.pillar-icon.ocean { background: rgba(46,134,171,0.15); }
+.pillar-icon.amber { background: rgba(199,123,23,0.15); }
+
+.pillar-body { }
+.pillar-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 6px; }
+.pillar-desc { font-size: 13.5px; color: rgba(255,255,255,0.45); line-height: 1.65; }
+.pillar-arrow { color: rgba(255,255,255,0.2); font-size: 18px; padding-top: 2px; transition: all 0.2s; }
+.value-pillar:hover .pillar-arrow { color: var(--sage-light); transform: translateX(4px); }
+
+.value-right { }
+
+.value-big-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-xl);
+  padding: 40px;
+  margin-bottom: 16px;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
+}
+
+.value-metric-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 16px;
+}
+
+.value-metric-big {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-style: italic;
+  color: white;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.value-metric-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 28px;
+}
+
+.value-bars { display: flex; flex-direction: column; gap: 14px; }
+
+.vbar-row { }
+.vbar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 6px;
+}
+.vbar-label span:last-child { color: white; font-weight: 700; }
+.vbar-track { height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; }
+.vbar-fill { height: 5px; border-radius: 3px; }
+
+.value-small-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.vscard {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-lg);
+  padding: 24px 20px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.vscard:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+
+.vscard-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: white;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.vscard-label { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+.vscard-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--sage-light);
+  background: rgba(82,183,136,0.15);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════
+   PRODUCT SHOWCASE
+═══════════════════════════════════ */
+.product-section { background: var(--paper); }
+
+.product-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--ink-04);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: 3rem;
+}
+
+.tab-btn {
+  padding: 9px 22px;
+  border-radius: var(--r-pill);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-50);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn.active { background: white; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: white;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.book-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--ink-20);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
+}
+
+.book-cover {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-cover-art {
+  width: 120px;
+  height: 176px;
+  border-radius: 6px;
+  box-shadow: 6px 6px 20px rgba(0,0,0,0.25), -2px -2px 8px rgba(255,255,255,0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 14px 14px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.book-card:hover .book-cover-art { transform: rotate(-3deg) scale(1.05); }
+
+.book-cover-art::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 10px;
+  background: rgba(0,0,0,0.2);
+}
+
+.bca-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: white;
+  line-height: 1.3;
+  margin-top: auto;
+  padding-left: 4px;
+}
+
+.bca-author { font-size: 9px; color: rgba(255,255,255,0.6); padding-left: 4px; margin-top: 6px; }
+
+.book-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+}
+
+.badge-new { background: var(--ink); color: white; }
+.badge-hot { background: #E63946; color: white; }
+.badge-sale { background: var(--sage); color: white; }
+
+.book-quick-add {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.book-card:hover .book-quick-add { opacity: 1; transform: scale(1); }
+.book-quick-add:hover { background: var(--ink); color: white; }
+
+.book-info { padding: 16px 18px 20px; }
+
+.book-category {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sage);
+  margin-bottom: 8px;
+}
+
+.book-title {
+  font-family: var(--serif);
+  font-size: 15.5px;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 5px;
+}
+
+.book-author { font-size: 12px; color: var(--ink-50); margin-bottom: 12px; }
+
+.book-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.book-rating { display: flex; align-items: center; gap: 5px; }
+.stars-small { color: #E8A900; font-size: 11px; }
+.rating-num { font-size: 11px; color: var(--ink-50); }
+
+.book-price {
+  text-align: right;
+}
+
+.price-original {
+  font-size: 11px;
+  color: var(--ink-20);
+  text-decoration: line-through;
+  line-height: 1;
+}
+
+.price-now {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+/* ═══════════════════════════════════
+   CATEGORIES — EDITORIAL GRID
+═══════════════════════════════════ */
+.cat-section { background: white; }
+
+.cat-editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+.cat-editorial-grid .cat-hero { grid-column: span 2; grid-row: span 2; }
+
+.cat-tile {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  transition: all 0.3s;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  text-decoration: none;
+}
+
+.cat-tile:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
+
+.cat-tile-bg { position: absolute; inset: 0; transition: transform 0.4s ease; }
+.cat-tile:hover .cat-tile-bg { transform: scale(1.04); }
+
+.cat-tile-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%); }
+
+.cat-tile-content { position: relative; z-index: 2; }
+
+.cat-tile-icon { font-size: 28px; display: block; margin-bottom: 10px; }
+.cat-tile-name { font-family: var(--serif); font-style: italic; font-size: 20px; color: white; line-height: 1.2; margin-bottom: 4px; }
+.cat-tile-count { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 500; }
+
+.cat-tile.hero { min-height: 380px; }
+
+.cat-tile-arrow {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s;
+}
+
+.cat-tile:hover .cat-tile-arrow { opacity: 1; transform: scale(1); }
+
+/* ═══════════════════════════════════
+   UMKM ECOSYSTEM SECTION
+═══════════════════════════════════ */
+.umkm-section { background: var(--warm-gray); }
+
+.umkm-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.umkm-numbers { display: flex; flex-direction: column; gap: 0; }
+
+.umkm-num-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.umkm-num-row:first-child { border-top: 1px solid var(--line); }
+
+.un-value {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.un-label { font-size: 13px; color: var(--ink-50); line-height: 1.5; }
+
+.un-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: center;
+}
+
+.un-bar { display: flex; flex-direction: column; gap: 4px; }
+.un-bar-label { font-size: 11px; color: var(--ink-50); display: flex; justify-content: space-between; }
+.un-bar-track { height: 4px; background: var(--ink-08); border-radius: 2px; }
+.un-bar-fill { height: 4px; border-radius: 2px; }
+
+.umkm-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.umkm-card {
+  background: white;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.umkm-card:hover { transform: translateY(-6px); border-color: var(--ink-20); box-shadow: 0 24px 48px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04); }
+
+.umkm-card-header {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  position: relative;
+}
+
+.umkm-verified-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--sage);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.03em;
+}
+
+.umkm-card-body { padding: 20px 22px 24px; }
+
+.umkm-city {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink-50);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.umkm-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.umkm-desc { font-size: 13px; color: var(--ink-50); line-height: 1.65; margin-bottom: 18px; }
+
+.umkm-metrics {
+  display: flex;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.umkm-metric { display: flex; flex-direction: column; gap: 2px; }
+.umkm-metric-val { font-size: 15px; font-weight: 700; color: var(--ink); }
+.umkm-metric-label { font-size: 10px; color: var(--ink-50); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.umkm-cta-banner {
+  margin-top: 3rem;
+  background: var(--ink);
+  border-radius: var(--r-xl);
+  padding: clamp(2.5rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.umkm-cta-banner::before {
+  content: '';
+  position: absolute;
+  right: -80px;
+  top: -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(82,183,136,0.15);
+}
+
+.umkm-cta-banner::after {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 1px solid rgba(82,183,136,0.1);
+}
+
+.ucb-text { position: relative; z-index: 2; }
+.ucb-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--sage-light); margin-bottom: 12px; }
+.ucb-title { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem); font-style: italic; color: white; margin-bottom: 8px; }
+.ucb-desc { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+.btn-cta-sage {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: var(--sage);
+  color: white;
+  border-radius: var(--r-pill);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s;
+  flex-shrink: 0;
+  border: 1.5px solid var(--sage);
+}
+
+.btn-cta-sage:hover { background: var(--sage-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(45,106,79,0.4); }
+
+/* ═══════════════════════════════════
+   MISSION / IMPACT
+═══════════════════════════════════ */
+.impact-section {
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.impact-visual {
+  position: relative;
+}
+
+.impact-map-card {
+  background: var(--ink);
+  border-radius: var(--r-xl);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.imc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.imc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); }
+.imc-live { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--sage-light); }
+.imc-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--sage-light); box-shadow: 0 0 6px var(--sage-light); animation: glow 2s infinite; }
+
+.imc-map {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--r-md);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Abstract Indonesia map using CSS */
+.map-shape {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 80px;
+  color: rgba(255,255,255,0.06);
+  user-select: none;
+}
+
+.map-dots {
+  position: absolute;
+  inset: 0;
+}
+
+.map-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sage-light);
+  box-shadow: 0 0 12px var(--sage-light);
+  animation: pulse-map 3s ease-in-out infinite;
+}
+
+@keyframes pulse-map {
+  0%,100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.5); opacity: 0.4; }
+}
+
+.imc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.imc-stat { }
+.imc-stat-num { font-family: var(--serif); font-size: 22px; color: white; }
+.imc-stat-label { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 3px; }
+
+.impact-float-card {
+  position: absolute;
+  background: white;
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  min-width: 180px;
+}
+
+.impact-float-card.top { top: -20px; right: -20px; }
+.impact-float-card.bottom { bottom: -16px; left: -16px; }
+
+.ifc-num { font-family: var(--serif); font-size: 24px; color: var(--ink); }
+.ifc-label { font-size: 11px; color: var(--ink-50); }
+.ifc-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: var(--sage); background: var(--sage-pale); padding: 2px 8px; border-radius: var(--r-pill); margin-top: 6px; }
+
+.impact-right { }
+
+.impact-pillars { display: flex; flex-direction: column; gap: 0; margin-top: 2.5rem; }
+
+.impact-pillar {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.impact-pillar:last-child { border-bottom: 1px solid var(--line); }
+
+.ip-number {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 36px;
+  color: var(--ink-20);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 48px;
+  text-align: right;
+}
+
+.ip-body { }
+.ip-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.ip-desc { font-size: 13.5px; color: var(--ink-50); line-height: 1.65; }
+
+/* ═══════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════ */
+.testi-section { background: var(--paper); overflow: hidden; }
+
+.testi-marquee-wrap { overflow: hidden; margin: 0 clamp(-1.25rem, -4vw, -3rem); }
+
+.testi-row {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
+}
+
+.testi-row.reverse { animation: marquee-reverse 35s linear infinite; }
+.testi-row.forward { animation: marquee-forward 35s linear infinite; margin-top: 20px; }
+
+@keyframes marquee-forward {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.testi-marquee-wrap:hover .testi-row { animation-play-state: paused; }
+
+.testi-card {
+  background: white;
+  border-radius: var(--r-lg);
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  min-width: 320px;
+  max-width: 340px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.testi-card:hover {
+  border-color: var(--ink-20);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.testi-card.featured {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.testi-stars { color: #E8A900; font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; }
+.testi-card.featured .testi-stars { color: #FCD34D; }
+
+.testi-text {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.testi-card.featured .testi-text { color: rgba(255,255,255,0.9); }
+
+.testi-author { display: flex; align-items: center; gap: 12px; }
+
+.testi-ava {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.testi-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.testi-card.featured .testi-name { color: white; }
+.testi-role { font-size: 11px; color: var(--ink-50); }
+.testi-card.featured .testi-role { color: rgba(255,255,255,0.45); }
+
+/* ═══════════════════════════════════
+   CONVERSION SECTION
+═══════════════════════════════════ */
+.conversion-section {
+  background: var(--paper);
+  padding-top: 0;
+}
+
+.conversion-inner {
+  background: var(--ink);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  position: relative;
+}
+
+.conv-top {
+  padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+}
+
+.conv-top::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  border: 1px solid rgba(82,183,136,0.08);
+  pointer-events: none;
+}
+
+.conv-h2 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-style: italic;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.conv-sub { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 32px; }
+
+.conv-form { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.conv-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 14px 20px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.2);
+  color: white;
+  font-family: var(--sans);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.conv-input::placeholder { color: rgba(255,255,255,0.3); }
+.conv-input:focus { border-color: var(--sage-light); background: rgba(0,0,0,0.3); box-shadow: 0 0 0 4px rgba(59,211,132,0.15), inset 0 2px 4px rgba(0,0,0,0.2); }
+
+.btn-conv {
+  padding: 14px 28px;
+  background: linear-gradient(to bottom, var(--sage-light), var(--sage));
+  color: white;
+  border-radius: var(--r-pill);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid var(--sage);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.2);
+}
+
+.btn-conv:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59,211,132,0.3), inset 0 1px 1px rgba(255,255,255,0.3); filter: brightness(1.1); }
+
+.conv-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 12px; }
+
+.conv-benefits { display: flex; flex-direction: column; gap: 14px; }
+
+.conv-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-md);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.conv-benefit:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); transform: translateX(4px); }
+
+.cb-icon { font-size: 20px; flex-shrink: 0; }
+.cb-title { font-size: 14px; font-weight: 700; color: white; margin-bottom: 3px; }
+.cb-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+.conv-bottom {
+  padding: 28px clamp(2rem, 5vw, 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.conv-trust { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+
+.conv-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+}
+
+.conv-trust-icon { font-size: 14px; }
+
+/* ═══════════════════════════════════
+   FOOTER
+═══════════════════════════════════ */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: clamp(4rem, 6vw, 6rem) clamp(1.25rem, 4vw, 3rem) 2.5rem;
+}
+
+.footer-inner { max-width: 1320px; margin: 0 auto; }
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr;
+  gap: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 2.5rem;
+}
+
+.footer-brand-col { }
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  margin-bottom: 18px;
+}
+
+.footer-logo-mark {
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.footer-logo-name {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 20px;
+  color: white;
+}
+
+.footer-logo-name em { color: var(--sage-light); font-style: normal; }
+
+.footer-tagline {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.7;
+  max-width: 300px;
+  margin-bottom: 24px;
+}
+
+.footer-socials { display: flex; gap: 8px; }
+
+.fsoc {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.fsoc:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); color: white; }
+
+.footer-col-head {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 20px;
+}
+
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { text-decoration: none; font-size: 14px; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+.footer-links a:hover { color: white; }
+
+.footer-contact-rows { display: flex; flex-direction: column; gap: 12px; }
+.footer-contact-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: rgba(255,255,255,0.45); }
+.fcr-icon { flex-shrink: 0; opacity: 0.5; margin-top: 1px; }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.25); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+/* ═══════════════════════════════════
+   SCROLL ANIMATIONS
+═══════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media (max-width: 1100px) {
+  .value-grid, .impact-grid, .umkm-intro-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-content { grid-template-columns: 1fr; }
+  .hero-geo { display: none; }
+  .hero-right { display: none; }
+  .cat-editorial-grid { grid-template-columns: 1fr 1fr; }
+  .cat-editorial-grid .cat-hero { grid-column: span 2; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .conv-top { grid-template-columns: 1fr; }
+  .umkm-cards-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-center { display: none; }
+  .hero-h1 .line-indent { padding-left: 0; }
+  .books-grid { grid-template-columns: repeat(2, 1fr); }
+  .cat-editorial-grid { grid-template-columns: 1fr; }
+  .cat-editorial-grid .cat-hero { grid-column: span 1; }
+  .umkm-cards-grid { grid-template-columns: 1fr; }
+  .umkm-num-row { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+  .value-small-cards { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .books-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE BAR -->
+<div class="announce-bar">
+  <div class="announce-dot"></div>
+  Gratis ongkir seluruh Indonesia untuk pembelian pertama &nbsp;·&nbsp; <a href="#">Klaim sekarang →</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="2" width="6" height="14" rx="1.5" fill="white" opacity="0.9"/>
+          <rect x="10" y="2" width="6" height="14" rx="1.5" fill="white" opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="logo-wordmark">Buku<em>Lokal</em></span>
+    </a>
+
+    <div class="nav-center">
+      <a href="#" class="nav-link active">Beranda</a>
+      <a href="#books" class="nav-link">Koleksi</a>
+      <a href="#umkm" class="nav-link">Mitra UMKM</a>
+      <a href="#impact" class="nav-link">Dampak</a>
+      <a href="#" class="nav-link">Tentang</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="#" class="btn-ghost">Masuk</a>
+      <a href="#" class="btn-solid">
+        Mulai Belanja
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-canvas"></div>
+  <div class="hero-watermark">Buku</div>
+
+  <!-- Geometric right-side visual -->
+  <div class="hero-geo">
+    <div class="hero-geo-circle"></div>
+    <div class="hero-geo-circle"></div>
+    <div class="hero-geo-circle"></div>
+    <div class="hero-geo-book">
+      <div class="hero-book-left">
+        <div class="hb-label">Buku Unggulan</div>
+        <div class="hb-title">Strategi Bisnis UMKM di Era Digital</div>
+        <div class="hb-author">Bambang Haryanto · 2024</div>
+      </div>
+      <div class="hero-book-right">
+        <div class="hb-chart-label">Penjualan</div>
+        <div class="hb-stat-row">
+          <div class="hb-bar-item">
+            <div class="hb-bar-name"><span>Bisnis</span><span>87%</span></div>
+            <div class="hb-bar-track"><div class="hb-bar-fill" style="width:87%;background:var(--sage-light)"></div></div>
+          </div>
+          <div class="hb-bar-item">
+            <div class="hb-bar-name"><span>Novel</span><span>72%</span></div>
+            <div class="hb-bar-track"><div class="hb-bar-fill" style="width:72%;background:var(--ocean-mid)"></div></div>
+          </div>
+          <div class="hb-bar-item">
+            <div class="hb-bar-name"><span>Pendidikan</span><span>65%</span></div>
+            <div class="hb-bar-track"><div class="hb-bar-fill" style="width:65%;background:var(--amber)"></div></div>
+          </div>
+          <div class="hb-bar-item">
+            <div class="hb-bar-name"><span>Anak-anak</span><span>54%</span></div>
+            <div class="hb-bar-track"><div class="hb-bar-fill" style="width:54%;background:#E63946"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating cards -->
+    <div class="hero-float-card hero-float-1">
+      <div class="float-label">Pendapatan UMKM Bulan Ini</div>
+      <div class="float-value">Rp 4,2 M</div>
+      <div class="float-sub">340 mitra aktif</div>
+      <div class="float-trend">↑ 127% vs tahun lalu</div>
+    </div>
+
+    <div class="hero-float-card hero-float-2">
+      <div class="float-label">Mitra Baru Bergabung</div>
+      <div class="float-umkm-list">
+        <div class="float-umkm-item">
+          <div class="float-umkm-dot" style="background:#D8F3DC">📚</div>
+          <div>
+            <div class="float-umkm-name">Toko Mandiri Jaya</div>
+            <div class="float-umkm-city">Yogyakarta</div>
+          </div>
+          <div class="float-umkm-new">Baru</div>
+        </div>
+        <div class="float-umkm-item">
+          <div class="float-umkm-dot" style="background:#D6EAF8">🏪</div>
+          <div>
+            <div class="float-umkm-name">Rumah Buku Timur</div>
+            <div class="float-umkm-city">Makassar</div>
+          </div>
+          <div class="float-umkm-new">Baru</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero text content -->
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-tag">Platform #1 Buku Lokal</span>
+        <span class="eyebrow-separator">×</span>
+        <span class="eyebrow-tag green">340+ UMKM Aktif</span>
+      </div>
+
+      <h1 class="hero-h1">
+        Baca lebih banyak.
+        <span class="line-indent"><em>Dampaknya</em> nyata.</span>
+      </h1>
+
+      <p class="hero-descriptor">
+        Marketplace buku terkurasi pertama di Indonesia yang secara langsung memberdayakan UMKM lokal di setiap transaksi. Bukan sekadar toko — ini gerakan literasi berkeadilan.
+      </p>
+
+      <div class="hero-cta-row">
+        <a href="#books" class="btn-cta-primary">
+          Jelajahi Koleksi
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#umkm" class="btn-cta-secondary">
+          Lihat Mitra UMKM
+        </a>
+      </div>
+
+      <div class="hero-proof">
+        <div class="proof-avatars">
+          <div class="proof-avatar" style="background:#D8F3DC;color:var(--sage)">A</div>
+          <div class="proof-avatar" style="background:#D6EAF8;color:var(--ocean)">B</div>
+          <div class="proof-avatar" style="background:#FEF3C7;color:var(--amber)">R</div>
+          <div class="proof-avatar" style="background:#FCE7F3;color:#9D174D">S</div>
+          <div class="proof-avatar" style="background:var(--ink);color:white">+</div>
+        </div>
+        <div class="proof-text">
+          Dipercaya <strong>48.000+</strong><br>pembaca aktif Indonesia
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-rating">
+          <div class="proof-stars">★★★★★</div>
+          <div class="proof-rating-text">4.9 dari 12.000+ ulasan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESS -->
+<div class="press-section">
+  <div class="press-inner">
+    <div class="press-label">Diliput oleh</div>
+    <div class="press-logos">
+      <div class="press-logo">Kompas</div>
+      <div class="press-logo">Tempo</div>
+      <div class="press-logo">Bisnis Indonesia</div>
+      <div class="press-logo">Katadata</div>
+      <div class="press-logo">DailyInsider</div>
+      <div class="press-logo">TechInAsia</div>
+    </div>
+  </div>
+</div>
+
+<!-- VALUE / PROBLEM SECTION -->
+<section class="value-section section">
+  <div class="section-wrap">
+    <div class="value-grid">
+      <div class="value-left">
+        <div class="section-number">01 — Mengapa BukuLokal</div>
+        <h2 class="section-h2">Industri buku lokal butuh <em>infrastruktur</em> baru.</h2>
+        <p class="section-lead">73% toko buku independen di Indonesia tidak memiliki akses ke platform digital. Kami hadir untuk mengubah itu — dengan teknologi yang berpihak pada pelaku lokal.</p>
+
+        <div class="value-pillars">
+          <div class="value-pillar reveal">
+            <div class="pillar-icon sage">📚</div>
+            <div class="pillar-body">
+              <div class="pillar-title">Kurasi Editorial Ketat</div>
+              <div class="pillar-desc">Setiap judul melalui seleksi tim editor berpengalaman. Bukan sekadar gudang buku — tapi rekomendasi yang bisa dipercaya.</div>
+            </div>
+            <div class="pillar-arrow">→</div>
+          </div>
+          <div class="value-pillar reveal reveal-delay-1">
+            <div class="pillar-icon ocean">🤝</div>
+            <div class="pillar-body">
+              <div class="pillar-title">Ekosistem UMKM Terintegrasi</div>
+              <div class="pillar-desc">UMKM mendapat dashboard real-time, pelatihan bisnis, dan akses ke 48.000+ pembaca aktif — semua dalam satu platform.</div>
+            </div>
+            <div class="pillar-arrow">→</div>
+          </div>
+          <div class="value-pillar reveal reveal-delay-2">
+            <div class="pillar-icon amber">📊</div>
+            <div class="pillar-body">
+              <div class="pillar-title">Dampak Terukur & Transparan</div>
+              <div class="pillar-desc">Setiap bulan kami publikasikan laporan dampak publik — pendapatan UMKM, buku terjual, dan pertumbuhan literasi daerah.</div>
+            </div>
+            <div class="pillar-arrow">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="value-right reveal">
+        <div class="value-big-card">
+          <div class="value-metric-label">Total GMV Platform 2024</div>
+          <div class="value-metric-big">Rp 18,4 M</div>
+          <div class="value-metric-sub">Naik 127% dibanding tahun sebelumnya</div>
+          <div class="value-bars">
+            <div class="vbar-row">
+              <div class="vbar-label"><span>Buku Terjual</span><span>58.000+</span></div>
+              <div class="vbar-track"><div class="vbar-fill" style="width:78%;background:var(--sage-light)"></div></div>
+            </div>
+            <div class="vbar-row">
+              <div class="vbar-label"><span>Mitra UMKM</span><span>340+</span></div>
+              <div class="vbar-track"><div class="vbar-fill" style="width:68%;background:var(--ocean-mid)"></div></div>
+            </div>
+            <div class="vbar-row">
+              <div class="vbar-label"><span>Kota Terjangkau</span><span>85</span></div>
+              <div class="vbar-track"><div class="vbar-fill" style="width:55%;background:var(--amber)"></div></div>
+            </div>
+            <div class="vbar-row">
+              <div class="vbar-label"><span>Pembaca Aktif</span><span>48.000+</span></div>
+              <div class="vbar-track"><div class="vbar-fill" style="width:90%;background:#E63946"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="value-small-cards">
+          <div class="vscard">
+            <div class="vscard-num">4,9 ★</div>
+            <div class="vscard-label">Rating rata-rata platform</div>
+            <div class="vscard-tag">↑ Top 1% e-commerce</div>
+          </div>
+          <div class="vscard">
+            <div class="vscard-num">24 Jam</div>
+            <div class="vscard-label">Rata-rata proses pengiriman</div>
+            <div class="vscard-tag">↑ 3× lebih cepat</div>
+          </div>
+          <div class="vscard">
+            <div class="vscard-num">40%</div>
+            <div class="vscard-label">Revenue ke UMKM langsung</div>
+            <div class="vscard-tag">↑ Tertinggi di kelas</div>
+          </div>
+          <div class="vscard">
+            <div class="vscard-num">0,4%</div>
+            <div class="vscard-label">Tingkat retur & keluhan</div>
+            <div class="vscard-tag">↓ Terendah industri</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKS SECTION -->
+<section class="product-section section" id="books">
+  <div class="section-wrap">
+    <div class="section-header-row">
+      <div>
+        <div class="section-number">02 — Koleksi Buku</div>
+        <h2 class="section-h2">Dikurasi untuk <em>pembaca nyata.</em></h2>
+        <p class="section-lead">12.400+ judul buku, dipilih oleh editor — bukan algoritma belaka.</p>
+      </div>
+      <a href="#" class="link-cta">Lihat semua koleksi →</a>
+    </div>
+
+    <div class="product-tabs">
+      <button class="tab-btn active" onclick="setTab(this,'semua')">Semua</button>
+      <button class="tab-btn" onclick="setTab(this,'bisnis')">Bisnis</button>
+      <button class="tab-btn" onclick="setTab(this,'novel')">Novel</button>
+      <button class="tab-btn" onclick="setTab(this,'pendidikan')">Pendidikan</button>
+      <button class="tab-btn" onclick="setTab(this,'anak')">Anak-anak</button>
+    </div>
+
+    <div class="books-grid">
+      <!-- Book 1 -->
+      <div class="book-card reveal">
+        <div class="book-cover" style="background:#EEF2FF;">
+          <div class="book-cover-art" style="background:linear-gradient(160deg,#1E3A8A,#3B82F6);">
+            <div class="bca-title">Strategi Bisnis UMKM di Era Digital</div>
+            <div class="bca-author">Bambang Haryanto</div>
+          </div>
+          <span class="book-badge badge-hot">🔥 Bestseller</span>
+          <button class="book-quick-add" onclick="addCart(this)">+</button>
+        </div>
+        <div class="book-info">
+          <div class="book-category">Bisnis</div>
+          <div class="book-title">Strategi Bisnis UMKM di Era Digital</div>
+          <div class="book-author">Bambang Haryanto</div>
+          <div class="book-meta">
+            <div class="book-rating"><span class="stars-small">★★★★★</span><span class="rating-num">(248)</span></div>
+            <div class="book-price"><div class="price-original">Rp 115.000</div><div class="price-now">Rp 89.000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 2 -->
+      <div class="book-card reveal reveal-delay-1">
+        <div class="book-cover" style="background:#F0FDF4;">
+          <div class="book-cover-art" style="background:linear-gradient(160deg,#14532D,#22C55E);">
+            <div class="bca-title">Jejak Pena Nusantara</div>
+            <div class="bca-author">Siti Rahayu</div>
+          </div>
+          <span class="book-badge badge-new">Baru</span>
+          <button class="book-quick-add" onclick="addCart(this)">+</button>
+        </div>
+        <div class="book-info">
+          <div class="book-category" style="color:var(--sage)">Novel</div>
+          <div class="book-title">Jejak Pena Nusantara</div>
+          <div class="book-author">Siti Rahayu</div>
+          <div class="book-meta">
+            <div class="book-rating"><span class="stars-small">★★★★★</span><span class="rating-num">(183)</span></div>
+            <div class="book-price"><div class="price-now">Rp 75.000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 3 -->
+      <div class="book-card reveal reveal-delay-2">
+        <div class="book-cover" style="background:#FFFBEB;">
+          <div class="book-cover-art" style="background:linear-gradient(160deg,#78350F,#D97706);">
+            <div class="bca-title">Python untuk Data Science Indonesia</div>
+            <div class="bca-author">Rendra Kusuma</div>
+          </div>
+          <span class="book-badge badge-sale">Promo</span>
+          <button class="book-quick-add" onclick="addCart(this)">+</button>
+        </div>
+        <div class="book-info">
+          <div class="book-category" style="color:var(--amber)">Teknologi</div>
+          <div class="book-title">Python untuk Data Science Indonesia</div>
+          <div class="book-author">Rendra Kusuma</div>
+          <div class="book-meta">
+            <div class="book-rating"><span class="stars-small">★★★★☆</span><span class="rating-num">(97)</span></div>
+            <div class="book-price"><div class="price-original">Rp 130.000</div><div class="price-now">Rp 99.000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 4 -->
+      <div class="book-card reveal reveal-delay-3">
+        <div class="book-cover" style="background:#FDF4FF;">
+          <div class="book-cover-art" style="background:linear-gradient(160deg,#4C1D95,#8B5CF6);">
+            <div class="bca-title">Fiqih Muamalah Kontemporer</div>
+            <div class="bca-author">Dr. Abdullah Hasim</div>
+          </div>
+          <button class="book-quick-add" onclick="addCart(this)">+</button>
+        </div>
+        <div class="book-info">
+          <div class="book-category" style="color:#7C3AED">Agama</div>
+          <div class="book-title">Fiqih Muamalah Kontemporer</div>
+          <div class="book-author">Dr. Abdullah Hasim</div>
+          <div class="book-meta">
+            <div class="book-rating"><span class="stars-small">★★★★★</span><span class="rating-num">(312)</span></div>
+            <div class="book-price"><div class="price-now">Rp 98.000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 5 -->
+      <div class="book-card reveal">
+        <div class="book-cover" style="background:#FFF1F2;">
+          <div class="book-cover-art" style="background:linear-gradient(160deg,#881337,#E11D48);">
+            <div class="bca-title">Petualangan Anak Desa</div>
+            <div class="bca-author">Mira Lestari</div>
+          </div>
+          <span class="book-badge badge-hot">🔥 Bestseller</span>
+          <button class="book-quick-add" onclick="addCart(this)">+</button>
+        </div>
+        <div class="book-info">
+          <div class="book-category" style="color:#E11D48">Anak-anak</div>
+          <div class="book-title">Petualangan Anak Desa</div>
+          <div class="book-author">Mira Lestari</div>
+          <div class="book-meta">
+            <div class="book-rating"><span class="stars-small">★★★★★</span><span class="rating-num">(445)</span></div>
+            <div class="book-price"><div class="price-original">Rp 65.000</div><div class="price-now">Rp 49.000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 6 -->
+      <div class="book-card reveal reveal-delay-1">
+        <div class="book-cover" style="background:#F0FDFA;">
+          <div class="book-cover-art" style="background:linear-gradient(160deg,#134E4A,#14B8A6);">
+            <div class="bca-title">Matematika Kreatif untuk SD</div>
+            <div class="bca-author">Tim BukuLokal</div>
+          </div>
+          <span class="book-badge badge-new">Baru</span>
+          <button class="book-quick-add" onclick="addCart(this)">+</button>
+        </div>
+        <div class="book-info">
+          <div class="book-category" style="color:#0F766E">Pendidikan</div>
+          <div class="book-title">Matematika Kreatif untuk SD</div>
+          <div class="book-author">Tim BukuLokal</div>
+          <div class="book-meta">
+            <div class="book-rating"><span class="stars-small">★★★★☆</span><span class="rating-num">(201)</span></div>
+            <div class="book-price"><div class="price-now">Rp 55.000</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="cat-section section">
+  <div class="section-wrap">
+    <div class="section-header-row">
+      <div>
+        <div class="section-number">03 — Kategori</div>
+        <h2 class="section-h2">Temukan genre <em>favoritmu.</em></h2>
+      </div>
+      <a href="#" class="link-cta">Semua kategori →</a>
+    </div>
+
+    <div class="cat-editorial-grid">
+      <a href="#" class="cat-tile cat-hero" style="min-height:380px;">
+        <div class="cat-tile-bg" style="background:linear-gradient(145deg,#0A3D62,#1B6CA8);"></div>
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-arrow">→</div>
+        <div class="cat-tile-content">
+          <span class="cat-tile-icon">💼</span>
+          <div class="cat-tile-name">Bisnis & Wirausaha</div>
+          <div class="cat-tile-count">1.850 judul tersedia</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-tile">
+        <div class="cat-tile-bg" style="background:linear-gradient(145deg,#1B4332,#40916C);"></div>
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-arrow">→</div>
+        <div class="cat-tile-content">
+          <span class="cat-tile-icon">📖</span>
+          <div class="cat-tile-name">Novel & Fiksi</div>
+          <div class="cat-tile-count">3.120 judul</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-tile">
+        <div class="cat-tile-bg" style="background:linear-gradient(145deg,#4A1C2E,#C0392B);"></div>
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-arrow">→</div>
+        <div class="cat-tile-content">
+          <span class="cat-tile-icon">🧒</span>
+          <div class="cat-tile-name">Anak-anak</div>
+          <div class="cat-tile-count">1.240 judul</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-tile">
+        <div class="cat-tile-bg" style="background:linear-gradient(145deg,#3D1F5A,#7B2D8B);"></div>
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-arrow">→</div>
+        <div class="cat-tile-content">
+          <span class="cat-tile-icon">🎓</span>
+          <div class="cat-tile-name">Pendidikan</div>
+          <div class="cat-tile-count">2.340 judul</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-tile">
+        <div class="cat-tile-bg" style="background:linear-gradient(145deg,#5C3A00,#C77B17);"></div>
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-arrow">→</div>
+        <div class="cat-tile-content">
+          <span class="cat-tile-icon">🕌</span>
+          <div class="cat-tile-name">Agama & Rohani</div>
+          <div class="cat-tile-count">1.670 judul</div>
+        </div>
+      </a>
+
+      <a href="#" class="cat-tile">
+        <div class="cat-tile-bg" style="background:linear-gradient(145deg,#1A1A2E,#16213E);"></div>
+        <div class="cat-tile-overlay"></div>
+        <div class="cat-tile-arrow">→</div>
+        <div class="cat-tile-content">
+          <span class="cat-tile-icon">💻</span>
+          <div class="cat-tile-name">Teknologi</div>
+          <div class="cat-tile-count">980 judul</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- UMKM SECTION -->
+<section class="umkm-section section" id="umkm">
+  <div class="section-wrap">
+    <div class="umkm-intro-grid">
+      <div>
+        <div class="section-number">04 — Ekosistem UMKM</div>
+        <h2 class="section-h2">Bukan mitra. <em>Keluarga bisnis.</em></h2>
+        <p class="section-lead">Kami tidak sekadar listing produk UMKM. Kami membangun ekosistem: teknologi, pelatihan, distribusi, dan akses pasar — semuanya dalam satu platform.</p>
+        <div style="margin-top: 2rem;">
+          <a href="#" class="btn-cta-primary" style="padding:13px 28px;font-size:14px;">
+            Daftar Menjadi Mitra
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="umkm-numbers">
+        <div class="umkm-num-row">
+          <div>
+            <div class="un-value">340+</div>
+            <div class="un-label">Mitra UMKM aktif di 85 kota</div>
+          </div>
+          <div class="un-breakdown">
+            <div class="un-bar">
+              <div class="un-bar-label"><span>Jawa</span><span>48%</span></div>
+              <div class="un-bar-track"><div class="un-bar-fill" style="width:48%;background:var(--sage-light)"></div></div>
+            </div>
+            <div class="un-bar">
+              <div class="un-bar-label"><span>Sumatera</span><span>22%</span></div>
+              <div class="un-bar-track"><div class="un-bar-fill" style="width:22%;background:var(--ocean-mid)"></div></div>
+            </div>
+            <div class="un-bar">
+              <div class="un-bar-label"><span>Kalimantan & lainnya</span><span>30%</span></div>
+              <div class="un-bar-track"><div class="un-bar-fill" style="width:30%;background:var(--amber)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="umkm-num-row">
+          <div>
+            <div class="un-value">Rp 4,2M</div>
+            <div class="un-label">Pendapatan mitra bulan ini</div>
+          </div>
+          <div class="un-breakdown">
+            <div class="un-bar">
+              <div class="un-bar-label"><span>Target: Rp 5M</span><span>84%</span></div>
+              <div class="un-bar-track"><div class="un-bar-fill" style="width:84%;background:var(--sage-light)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="umkm-cards-grid">
+      <div class="umkm-card reveal">
+        <div class="umkm-card-header" style="background:linear-gradient(145deg,#ECFDF5,#D1FAE5);">📚
+          <div class="umkm-verified-badge">✓ Terverifikasi</div>
+        </div>
+        <div class="umkm-card-body">
+          <div class="umkm-city">📍 Yogyakarta, DIY</div>
+          <div class="umkm-name">Toko Buku Mandiri Jaya</div>
+          <div class="umkm-desc">Toko buku independen 15 tahun, spesialisasi buku pendidikan dan pengembangan diri lokal.</div>
+          <div class="umkm-metrics">
+            <div class="umkm-metric"><div class="umkm-metric-val">4.9 ★</div><div class="umkm-metric-label">Rating</div></div>
+            <div class="umkm-metric"><div class="umkm-metric-val">1.240</div><div class="umkm-metric-label">Pesanan</div></div>
+            <div class="umkm-metric"><div class="umkm-metric-val">3 Thn</div><div class="umkm-metric-label">Bergabung</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="umkm-card reveal reveal-delay-1">
+        <div class="umkm-card-header" style="background:linear-gradient(145deg,#EFF6FF,#DBEAFE);">🏪
+          <div class="umkm-verified-badge">✓ Terverifikasi</div>
+        </div>
+        <div class="umkm-card-body">
+          <div class="umkm-city">📍 Solo, Jawa Tengah</div>
+          <div class="umkm-name">CV. Literasi Nusantara</div>
+          <div class="umkm-desc">Distributor buku lokal yang membantu penulis daerah menerbitkan dan memasarkan karya mereka.</div>
+          <div class="umkm-metrics">
+            <div class="umkm-metric"><div class="umkm-metric-val">4.8 ★</div><div class="umkm-metric-label">Rating</div></div>
+            <div class="umkm-metric"><div class="umkm-metric-val">2.850</div><div class="umkm-metric-label">Pesanan</div></div>
+            <div class="umkm-metric"><div class="umkm-metric-val">4 Thn</div><div class="umkm-metric-label">Bergabung</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="umkm-card reveal reveal-delay-2">
+        <div class="umkm-card-header" style="background:linear-gradient(145deg,#FFF7ED,#FED7AA);">✍️
+          <div class="umkm-verified-badge">✓ Terverifikasi</div>
+        </div>
+        <div class="umkm-card-body">
+          <div class="umkm-city">📍 Makassar, Sulawesi Selatan</div>
+          <div class="umkm-name">Rumah Buku Timur</div>
+          <div class="umkm-desc">Mengkhususkan pada buku budaya dan kearifan lokal Indonesia Timur yang langka dan autentik.</div>
+          <div class="umkm-metrics">
+            <div class="umkm-metric"><div class="umkm-metric-val">4.9 ★</div><div class="umkm-metric-label">Rating</div></div>
+            <div class="umkm-metric"><div class="umkm-metric-val">890</div><div class="umkm-metric-label">Pesanan</div></div>
+            <div class="umkm-metric"><div class="umkm-metric-val">2 Thn</div><div class="umkm-metric-label">Bergabung</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="umkm-cta-banner reveal">
+      <div class="ucb-text">
+        <div class="ucb-eyebrow">Program Mitra UMKM</div>
+        <div class="ucb-title">Punya toko buku atau usaha lokal?</div>
+        <div class="ucb-desc">Bergabung gratis. Dapat dashboard, pelatihan, dan akses ke 48.000+ pembaca aktif.</div>
+      </div>
+      <a href="#" class="btn-cta-sage">
+        🚀 Daftar Sekarang — Gratis
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact-section section" id="impact">
+  <div class="section-wrap">
+    <div class="impact-grid">
+      <div class="impact-visual">
+        <div class="impact-map-card">
+          <div class="imc-header">
+            <div class="imc-title">Peta Distribusi BukuLokal</div>
+            <div class="imc-live">Live</div>
+          </div>
+          <div class="imc-map">
+            <div class="map-shape">🗺️</div>
+            <div class="map-dots">
+              <div class="map-dot" style="top:30%;left:20%;animation-delay:0s"></div>
+              <div class="map-dot" style="top:45%;left:35%;animation-delay:0.4s"></div>
+              <div class="map-dot" style="top:50%;left:50%;animation-delay:0.8s"></div>
+              <div class="map-dot" style="top:40%;left:62%;animation-delay:1.2s"></div>
+              <div class="map-dot" style="top:35%;left:75%;animation-delay:0.6s"></div>
+              <div class="map-dot" style="top:60%;left:28%;animation-delay:1.5s"></div>
+              <div class="map-dot" style="top:25%;left:55%;animation-delay:0.3s"></div>
+              <div class="map-dot" style="top:55%;left:68%;animation-delay:1s"></div>
+              <div class="map-dot" style="top:48%;left:82%;animation-delay:0.7s"></div>
+            </div>
+          </div>
+          <div class="imc-stats">
+            <div class="imc-stat"><div class="imc-stat-num">85</div><div class="imc-stat-label">Kota</div></div>
+            <div class="imc-stat"><div class="imc-stat-num">340+</div><div class="imc-stat-label">Mitra</div></div>
+            <div class="imc-stat"><div class="imc-stat-num">48K+</div><div class="imc-stat-label">Pembaca</div></div>
+          </div>
+        </div>
+
+        <div class="impact-float-card top">
+          <div class="ifc-num">Rp 4,2M</div>
+          <div class="ifc-label">Pendapatan UMKM bulan ini</div>
+          <div class="ifc-badge">↑ 127% YoY</div>
+        </div>
+
+        <div class="impact-float-card bottom">
+          <div class="ifc-num">58.000+</div>
+          <div class="ifc-label">Buku terjual 2024</div>
+          <div class="ifc-badge">↑ Sepanjang masa</div>
+        </div>
+      </div>
+
+      <div class="impact-right">
+        <div class="section-number">05 — Dampak Nyata</div>
+        <h2 class="section-h2">Setiap buku,<br><em>satu langkah maju.</em></h2>
+        <p class="section-lead">Kami mengukur keberhasilan bukan hanya dari GMV — tapi dari berapa banyak kehidupan yang berubah karena buku dan UMKM yang kami bantu tumbuh.</p>
+
+        <div class="impact-pillars">
+          <div class="impact-pillar reveal">
+            <div class="ip-number">01</div>
+            <div class="ip-body">
+              <div class="ip-title">Transparansi Penuh, Selalu</div>
+              <div class="ip-desc">Laporan dampak publik diterbitkan setiap bulan. Berapa UMKM terbantu, berapa buku tersebar, berapa komunitas terdampak — semua terbuka.</div>
+            </div>
+          </div>
+          <div class="impact-pillar reveal reveal-delay-1">
+            <div class="ip-number">02</div>
+            <div class="ip-body">
+              <div class="ip-title">40% Revenue Langsung ke Mitra</div>
+              <div class="ip-desc">Model bisnis kami dirancang agar UMKM selalu menang. Bukan komisi kecil — tapi kemitraan yang sesungguhnya menguntungkan pelaku lokal.</div>
+            </div>
+          </div>
+          <div class="impact-pillar reveal reveal-delay-2">
+            <div class="ip-number">03</div>
+            <div class="ip-body">
+              <div class="ip-title">Program Literasi Daerah</div>
+              <div class="ip-desc">5% GMV dialokasikan untuk donasi buku ke sekolah-sekolah pedesaan. Setiap pembelian berkontribusi langsung pada program ini.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section section" style="padding-bottom:0;">
+  <div class="section-wrap" style="margin-bottom:3rem;">
+    <div class="section-number">06 — Apa Kata Mereka</div>
+    <h2 class="section-h2">Kepercayaan yang <em>terbangun nyata.</em></h2>
+  </div>
+
+  <div class="testi-marquee-wrap">
+    <div class="testi-row forward">
+      <!-- Row 1 cards — duplicated for infinite scroll -->
+      <div class="testi-card featured">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"BukuLokal bukan cuma tempat beli buku. Omzet toko saya naik 3× dalam 6 bulan bergabung sebagai mitra."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#1B4965;color:white">BH</div><div><div class="testi-name">Budi Hartono</div><div class="testi-role">Mitra UMKM, Semarang</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Gratis ongkir ke seluruh kecamatan saya? Terobosan besar. Warga desa pun bisa akses buku berkualitas."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#D8F3DC;color:var(--sage)">HM</div><div><div class="testi-name">Hendra Mulyono</div><div class="testi-role">Kepala Desa, Kalimantan Selatan</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Saya sudah beli 40+ buku di sini. Kurasi editorialnya luar biasa — setiap rekomendasi selalu tepat."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#FEF3C7;color:var(--amber)">RP</div><div><div class="testi-name">Rizky Pratama</div><div class="testi-role">Pembaca Aktif, Surabaya</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Sebagai penulis lokal, saya senang karya saya bisa tersebar ke seluruh Indonesia lewat jaringan BukuLokal."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#F5F3FF;color:#5B21B6">DW</div><div><div class="testi-name">Dewi Wulandari</div><div class="testi-role">Penulis Lokal, Yogyakarta</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Dashboard mitra sangat intuitif. Track pesanan, pendapatan, dan performa toko dari HP — keren banget."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#D6EAF8;color:var(--ocean)">SL</div><div><div class="testi-name">Sari Lestari</div><div class="testi-role">Mitra UMKM, Padang</div></div></div>
+      </div>
+      <!-- Duplicate for seamless loop -->
+      <div class="testi-card featured">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"BukuLokal bukan cuma tempat beli buku. Omzet toko saya naik 3× dalam 6 bulan bergabung sebagai mitra."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#1B4965;color:white">BH</div><div><div class="testi-name">Budi Hartono</div><div class="testi-role">Mitra UMKM, Semarang</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Gratis ongkir ke seluruh kecamatan saya? Terobosan besar. Warga desa pun bisa akses buku berkualitas."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#D8F3DC;color:var(--sage)">HM</div><div><div class="testi-name">Hendra Mulyono</div><div class="testi-role">Kepala Desa, Kalimantan Selatan</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Saya sudah beli 40+ buku di sini. Kurasi editorialnya luar biasa — setiap rekomendasi selalu tepat."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#FEF3C7;color:var(--amber)">RP</div><div><div class="testi-name">Rizky Pratama</div><div class="testi-role">Pembaca Aktif, Surabaya</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Sebagai penulis lokal, saya senang karya saya bisa tersebar ke seluruh Indonesia lewat jaringan BukuLokal."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#F5F3FF;color:#5B21B6">DW</div><div><div class="testi-name">Dewi Wulandari</div><div class="testi-role">Penulis Lokal, Yogyakarta</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Dashboard mitra sangat intuitif. Track pesanan, pendapatan, dan performa toko dari HP — keren banget."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#D6EAF8;color:var(--ocean)">SL</div><div><div class="testi-name">Sari Lestari</div><div class="testi-role">Mitra UMKM, Padang</div></div></div>
+      </div>
+    </div>
+
+    <div class="testi-row reverse" style="margin-top:16px;margin-bottom:16px;">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Toko kami akhirnya bisa bersaing secara digital tanpa perlu investasi besar. BukuLokal menyediakan semua infrastrukturnya."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#FCE7F3;color:#9D174D">AN</div><div><div class="testi-name">Ayu Nurhaliza</div><div class="testi-role">Guru & Pembeli Aktif, Bandung</div></div></div>
+      </div>
+      <div class="testi-card featured">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Laporan dampak bulanan mereka yang bikin saya percaya. Transparansi seperti ini jarang sekali di e-commerce Indonesia."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#2D6A4F;color:white">MR</div><div><div class="testi-name">Muhammad Ridwan</div><div class="testi-role">Investor & Advisor, Jakarta</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Program donasi buku ke sekolah pedesaan yang mereka jalankan sungguh mengharukan. Bisnis sambil berbuat baik."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#FFFBEB;color:var(--amber)">PK</div><div><div class="testi-name">Putri Kusuma</div><div class="testi-role">Aktivis Literasi, Nusa Tenggara</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Buku tiba dalam 2 hari ke daerah saya yang cukup terpencil. Layanan pengiriman mereka benar-benar impressive."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#F0FDFA;color:#0F766E">YS</div><div><div class="testi-name">Yusuf Santoso</div><div class="testi-role">Pembaca, Papua Barat</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Customer service mereka merespons dalam hitungan menit. Standar pelayanan yang harusnya jadi benchmark industri."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#EFF6FF;color:var(--ocean)">LH</div><div><div class="testi-name">Lina Hartati</div><div class="testi-role">Pelanggan Setia, Medan</div></div></div>
+      </div>
+      <!-- Duplicated -->
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Toko kami akhirnya bisa bersaing secara digital tanpa perlu investasi besar. BukuLokal menyediakan semua infrastrukturnya."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#FCE7F3;color:#9D174D">AN</div><div><div class="testi-name">Ayu Nurhaliza</div><div class="testi-role">Guru & Pembeli Aktif, Bandung</div></div></div>
+      </div>
+      <div class="testi-card featured">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Laporan dampak bulanan mereka yang bikin saya percaya. Transparansi seperti ini jarang sekali di e-commerce Indonesia."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#2D6A4F;color:white">MR</div><div><div class="testi-name">Muhammad Ridwan</div><div class="testi-role">Investor & Advisor, Jakarta</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Program donasi buku ke sekolah pedesaan yang mereka jalankan sungguh mengharukan. Bisnis sambil berbuat baik."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#FFFBEB;color:var(--amber)">PK</div><div><div class="testi-name">Putri Kusuma</div><div class="testi-role">Aktivis Literasi, Nusa Tenggara</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Buku tiba dalam 2 hari ke daerah saya yang cukup terpencil. Layanan pengiriman mereka benar-benar impressive."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#F0FDFA;color:#0F766E">YS</div><div><div class="testi-name">Yusuf Santoso</div><div class="testi-role">Pembaca, Papua Barat</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Customer service mereka merespons dalam hitungan menit. Standar pelayanan yang harusnya jadi benchmark industri."</div>
+        <div class="testi-author"><div class="testi-ava" style="background:#EFF6FF;color:var(--ocean)">LH</div><div><div class="testi-name">Lina Hartati</div><div class="testi-role">Pelanggan Setia, Medan</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONVERSION / NEWSLETTER -->
+<section class="conversion-section section">
+  <div class="section-wrap">
+    <div class="conversion-inner">
+      <div class="conv-top">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--sage-light);margin-bottom:16px;">Newsletter Mingguan</div>
+          <h2 class="conv-h2">Buku terbaik minggu ini, langsung ke inbox.</h2>
+          <p class="conv-sub">Bergabung dengan 48.000+ pembaca yang menerima rekomendasi buku kurasi, promo eksklusif, dan cerita UMKM inspiratif setiap minggu.</p>
+          <div class="conv-form">
+            <input type="email" class="conv-input" placeholder="nama@email.com" id="emailInput">
+            <button class="btn-conv" id="convBtn">Langganan Gratis</button>
+          </div>
+          <div class="conv-note">🔒 Privasi terjamin. Berhenti kapan saja. Tidak ada spam.</div>
+        </div>
+
+        <div class="conv-benefits">
+          <div class="conv-benefit">
+            <div class="cb-icon">📚</div>
+            <div><div class="cb-title">Rekomendasi Kurasi Editorial</div><div class="cb-desc">5 buku pilihan editor setiap minggu, bukan algoritma</div></div>
+          </div>
+          <div class="conv-benefit">
+            <div class="cb-icon">🏷️</div>
+            <div><div class="cb-title">Promo Eksklusif Subscriber</div><div class="cb-desc">Akses early bird dan diskon khusus yang tidak tersedia publik</div></div>
+          </div>
+          <div class="conv-benefit">
+            <div class="cb-icon">🤝</div>
+            <div><div class="cb-title">Cerita UMKM Inspiratif</div><div class="cb-desc">Profil mitra sukses dan dampak nyata yang mereka ciptakan</div></div>
+          </div>
+          <div class="conv-benefit">
+            <div class="cb-icon">📊</div>
+            <div><div class="cb-title">Laporan Dampak Bulanan</div><div class="cb-desc">Angka transparan: berapa UMKM terbantu, berapa buku tersebar</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="conv-bottom">
+        <div class="conv-trust">
+          <div class="conv-trust-item"><span class="conv-trust-icon">🔒</span> SSL Encrypted</div>
+          <div class="conv-trust-item"><span class="conv-trust-icon">✅</span> OJK Terdaftar</div>
+          <div class="conv-trust-item"><span class="conv-trust-icon">🏅</span> PPDP Compliant</div>
+          <div class="conv-trust-item"><span class="conv-trust-icon">💳</span> 15+ Metode Pembayaran</div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.25);">© 2025 BukuLokal · Indonesia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <a href="#" class="footer-logo">
+          <div class="footer-logo-mark">📚</div>
+          <div class="footer-logo-name">Buku<em>Lokal</em></div>
+        </a>
+        <div class="footer-tagline">Platform penjualan buku yang memberdayakan UMKM lokal di seluruh Indonesia. Setiap buku yang kamu beli, satu usaha kecil ikut berkembang.</div>
+        <div class="footer-socials">
+          <a href="#" class="fsoc">𝕏</a>
+          <a href="#" class="fsoc">in</a>
+          <a href="#" class="fsoc">📸</a>
+          <a href="#" class="fsoc">▶</a>
+          <a href="#" class="fsoc">🎵</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-head">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#">Katalog Buku</a></li>
+          <li><a href="#">Buku Terbaru</a></li>
+          <li><a href="#">Bestseller</a></li>
+          <li><a href="#">Flash Sale</a></li>
+          <li><a href="#">Pre-order</a></li>
+          <li><a href="#">E-Book</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-head">Mitra & UMKM</div>
+        <ul class="footer-links">
+          <li><a href="#">Daftar Mitra</a></li>
+          <li><a href="#">Dashboard Mitra</a></li>
+          <li><a href="#">Program Afiliasi</a></li>
+          <li><a href="#">Panduan Penjual</a></li>
+          <li><a href="#">Komunitas UMKM</a></li>
+          <li><a href="#">Laporan Dampak</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-head">Hubungi Kami</div>
+        <div class="footer-contact-rows">
+          <div class="footer-contact-row"><span class="fcr-icon">✉</span><span>halo@bukulokal.id</span></div>
+          <div class="footer-contact-row"><span class="fcr-icon">📱</span><span>+62 811-2345-6789</span></div>
+          <div class="footer-contact-row"><span class="fcr-icon">📍</span><span>Jl. Literasi No. 12,<br>Yogyakarta 55281</span></div>
+          <div class="footer-contact-row"><span class="fcr-icon">🕒</span><span>Sen–Jum, 08.00–17.00 WIB</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 BukuLokal, Inc. Dibuat dengan ❤️ untuk UMKM Indonesia.</div>
+      <div class="footer-legal">
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Cookie</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV scroll effect */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* Intersection observer for .reveal */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* Tab switching */
+function setTab(btn, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* Add to cart */
+function addCart(btn) {
+  const orig = btn.textContent;
+  btn.textContent = '✓';
+  btn.style.background = 'var(--sage)';
+  btn.style.color = 'white';
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 1400);
+}
+
+/* Newsletter */
+const convBtn = document.getElementById('convBtn');
+const emailInput = document.getElementById('emailInput');
+if (convBtn) {
+  convBtn.addEventListener('click', () => {
+    const val = emailInput ? emailInput.value : '';
+    if (val.includes('@') && val.includes('.')) {
+      convBtn.textContent = '✓ Berhasil!';
+      convBtn.style.background = '#1B4332';
+      if (emailInput) emailInput.value = '';
+      setTimeout(() => {
+        convBtn.textContent = 'Langganan Gratis';
+        convBtn.style.background = '';
+      }, 3000);
+    } else {
+      convBtn.textContent = 'Masukkan email valid';
+      convBtn.style.background = '#7F1D1D';
+      setTimeout(() => {
+        convBtn.textContent = 'Langganan Gratis';
+        convBtn.style.background = '';
+      }, 2000);
+    }
+  });
+}
+
+/* Animate progress bars when visible */
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.hb-bar-fill').forEach(b => {
+        const w = b.style.width;
+        b.style.width = '0';
+        setTimeout(() => { b.style.width = w; }, 100);
+      });
+      barObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.hero-book-right').forEach(el => barObs.observe(el));
+</script>
+</body>
+</html>
